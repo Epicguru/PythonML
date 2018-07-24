@@ -15,14 +15,11 @@ class Sprite(game_entity.GameEntity):
 
         pass
 
-    def update(self, dt: float):
-
-        x = self.position[0]
-        x += 64.0 * dt
-        self.position = (x, self.position[1])
-
     def render(self, screen: pygame.Surface):
 
-        screen.blit(self.image, self.position + gs.camera_pos)
+        if self.image is None:
+            return
+
+        screen.blit(self.image, (self.position[0] - gs.camera_pos[0], self.position[1] + gs.camera_pos[1]))
 
         pass
