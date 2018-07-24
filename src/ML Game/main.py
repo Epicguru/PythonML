@@ -1,10 +1,15 @@
+import window_control_entity
+import game_state as gs
 
-entities = []
-
-target_frame_rate = 60
-bg_colour = (255, 255, 255)
 resolution = (600, 400)
-running = True
+
+
+def add_entities():
+
+    gs.entities.append(window_control_entity.WindowControlEntity())
+
+    for e in gs.entities:
+        e.init()
 
 
 def run():
@@ -20,31 +25,42 @@ def run():
     # Set up the screen
     screen = pygame.display.set_mode(resolution)
 
+    # Add core entities.
+    add_entities()
+
     # Start game loop.
-    while running:
+    while gs.running:
 
         # Wait for target time to achieve frame rate, and also get ms time to extract delta time.
-        ms = clock.tick(target_frame_rate)
+        ms = clock.tick(gs.target_frame_rate)
         dt = ms / 1000.0
 
         for event in pygame.event.get():
-            for e in entities:
+            for e in gs.entities:
                 if isinstance(e, GameEntity):
                     e.upon_event(event)
 
-        for e in entities:
+        for e in gs.entities:
             if isinstance(e, GameEntity):
                 e.update(dt)
 
-        screen.fill(bg_colour)
+        screen.fill(gs.bg_colour)
 
         # Draw everything here...
-
+        for e in gs.entities:
+            if isinstance(e, GameEntity):
+                e.render(screen)
         # Update the window display. Must always be called.
         pygame.display.flip()
 
     print("Game loop terminated, bye...")
 
 
+def quit_game():
+    global running
+    running = False
+
+
 if __name__ == "__main__":
+
     run()
