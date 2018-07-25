@@ -1,5 +1,6 @@
 import game_state as gs
 from agents import *
+from utils.mouse_utils import *
 
 
 def start_game():
@@ -8,6 +9,8 @@ def start_game():
 
     # Reset the stage
     gs.current_stage = 0
+    gs.turn_index = 0
+    gs.friendly_turn = True
 
     # Create the friendlies...
     gs.friendlies = []
@@ -31,7 +34,7 @@ def update(dt):
     # Move the camera according to the current stage and number of agents on the screen
     gs.camera_controller.target_pos.set_x(gs.current_stage * settings.stage_distance + settings.agent_side_separation * 0.5)
     f = len(gs.friendlies)
-    e = len(gs.enemies[gs.current_stage])
+    e = settings.enemies_per_stage[gs.current_stage]
     m = f if f > e else e
     y_pos = (m * settings.agent_height_difference - 128.0) * 0.5
     gs.camera_controller.target_pos.set_y(y_pos)
@@ -66,3 +69,19 @@ def next_stage():
     else:
         gs.current_stage += 1
         print("Moving on to stage: index #%s" % str(gs.current_stage))
+
+
+def process_turn(turn_index: int, turn_agent: Agent, friendly: bool, friendlies: [], oponents: []) -> (int, int):
+    """
+
+    :param turn_index: The index of the friendly Agent. Note that in this processing section, friendlies may actually be enemies in the normal game, since this method is used to process both enemy and local player actions.
+    :param turn_agent: The agent who's turn it is.
+    :param friendly: The real in-game friendly state. So if true, this is one of the blue guys.
+    :param friendlies: The friendly guys, from the perspective of the turn_agent. May be blue or red, see friendly param.
+    :param oponents: The enemies, from the perspective of the turn_agent. May be blue or red, see friendly param.
+    :return: A tupple consisting of:
+    0: The target oponent index. Must be in the range 0 len(oponents - 1)
+    1: The action index to perform on the target oponent. Not implemented yet, just set it to 0.
+    """
+
+    pass

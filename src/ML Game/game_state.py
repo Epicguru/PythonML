@@ -14,6 +14,8 @@ camera_controller = None
 completed = False
 
 current_stage = 0
+friendly_turn = True
+turn_index = 0
 
 friendlies = []
 """A 2D array, where the outer array are the stages and the inner arrays are the list of enemies themselves."""

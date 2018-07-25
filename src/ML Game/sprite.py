@@ -7,18 +7,19 @@ from utils.math_utils import *
 
 class Sprite(game_entity.GameEntity):
 
-    image = None
-    image_dim = (0, 0)
-    pivot = (0, 0)
-
     def __init__(self, image: pygame.Surface, position: Vector2 = Vector2(0.0, 0.0)):
 
+        self.enabled = True
+        self.image = None
+        self.image_dim = (0, 0)
+        self.pivot = (0, 0)
+        self.bounds = pygame.Rect(0, 0, 0, 0)
         self.set_image(image)
 
         if position is not None:
             self.position = Vector2(position.get_x(), position.get_y())
         else:
-            self.position = utils.math_utils.VECTOR_ZERO
+            self.position = Vector2(0, 0)
 
         # Add to entities automatically.
         gs.register_entity(self)
@@ -31,13 +32,20 @@ class Sprite(game_entity.GameEntity):
     def set_pivot(self, x: float, y: float):
         self.pivot = (clamp(x, 0, 1), clamp(y, 0, 1))
 
+    def get_bounds(self) -> pygame.Rect:
+        return self.bounds
+
     def set_image(self, image: pygame.Surface):
         self.image = image
 
         if image is None:
             self.image_dim = (0, 0)
+            self.bounds.center = (0, 0)
+            self.bounds.size = (0, 0)
         else:
             self.image_dim = (self.image.get_width(), self.image.get_height())
+            self.bounds.center = (self.pivot[0], self.pivot[1])
+            self.bounds.size = (self.image_dim[0], self.image_dim[1])
 
     def set_position(self, pos: Vector2):
         self.position.set(pos)
@@ -45,9 +53,15 @@ class Sprite(game_entity.GameEntity):
     def get_image_dimensions(self):
         return self.image_dim
 
+    def update(self, dt: float):
+
+        self.bounds.center = (self.position.get_x() + self.pivot[0], self.position.get_y() + self.pivot[1])
+
     def render(self, screen: pygame.Surface):
 
         if self.image is None:
+            return
+        if not self.enabled:
             return
 
         x = (self.position.get_x() -
