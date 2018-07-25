@@ -40,7 +40,7 @@ def run():
         # Wait for target time to achieve frame rate, and also get ms time to extract delta time.
         clock.tick(gs.target_frame_rate)
         time_now = time.time()
-        dt = time_now - last_time
+        dt = (time_now - last_time) * gs.time_scale
         last_time = time_now
 
         # Update title

@@ -72,11 +72,15 @@ class Vector2(tuple):
 
     def normalize(self):
         mag = self.magnitude()
+        if mag == 0:
+            return
         self.set_x(self.get_x() / mag)
         self.set_y(self.get_y() / mag)
 
     def normalized(self) -> "Vector2":
         mag = self.magnitude()
+        if mag == 0:
+            return self
         return Vector2(x=self.get_x() / mag, y=self.get_y() / mag)
 
     def __iadd__(self, other):

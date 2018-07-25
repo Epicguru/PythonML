@@ -25,7 +25,7 @@ def load_image(path: str, use_cache=True, save_to_cache=True) -> pygame.Surface:
         if save_to_cache:
             # Add to cache
             images[path] = loaded
-            print("Cached '%s'" % path)
+            print("Cached '%s'" % full_path)
 
         return loaded
     except pygame.error:

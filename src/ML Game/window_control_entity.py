@@ -1,10 +1,8 @@
 import pygame
-from game_entity import GameEntity
-from sprite import Sprite
 import random
 from utils.asset_loader import load_image
-import game_state as gs
-from utils.math_utils import *
+from utils.text_utils import *
+
 from agents import *
 
 
@@ -23,4 +21,16 @@ class WindowControlEntity(GameEntity):
 
         if event.type == pygame.QUIT:
             gs.running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                if gs.time_scale == settings.boosted_time_scale:
+                    gs.time_scale = 1.0
+                else:
+                    gs.time_scale = settings.boosted_time_scale
 
+    def late_render(self, screen: pygame.Surface):
+
+        text = create_text("Stage %d/%d" % (gs.current_stage + 1, settings.total_stages), size=24)
+        draw_text(text, screen, (0, 0))
+
+        pass
