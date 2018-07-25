@@ -1,18 +1,20 @@
 import pygame
 from game_entity import GameEntity
-import game_state as gs
 from sprite import Sprite
 import random
-from asset_loader import load_image
+from utils.asset_loader import load_image
 import game_state as gs
+from utils.math_utils import *
 
 
 class WindowControlEntity(GameEntity):
 
+    i = 0
+
     def update(self, dt: float):
 
-        x = gs.camera_pos[0]
-        y = gs.camera_pos[1]
+        x = gs.camera_pos.get_x()
+        y = gs.camera_pos.get_y()
 
         mp = pygame.mouse.get_pos()
         mx = mp[0]
@@ -25,12 +27,8 @@ class WindowControlEntity(GameEntity):
         off_y = my - center[1]
         off_y /= gs.resolution[1]
 
-        x += dt * off_x * 1000.0
-        y -= dt * off_y * 1000.0
-
-        gs.camera_pos = (x, y)
-
-        pass
+        gs.camera_pos.inc_x(dt * off_x * 1000.0)
+        gs.camera_pos.dec_y(dt * off_y * 1000.0)
 
     def upon_event(self, event: pygame.event):
 
@@ -38,5 +36,8 @@ class WindowControlEntity(GameEntity):
             gs.running = False
         if event.type == pygame.KEYDOWN:
             if event.key == ord("s"):
-                spr = Sprite(load_image("Test.png"), position=(random.randrange(0, 500), random.randrange(0, 300)))
+                spr = Sprite(load_image("Test.png"), position=Vector2(self.i * 64, self.i * 32))
+                spr.set_pivot(0.5, 0.5)
+                spr.set_position()
+                self.i += 1
 

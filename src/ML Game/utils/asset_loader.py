@@ -4,7 +4,7 @@ import os
 images = {}
 
 
-def load_image(path: str, use_cache=True, save_to_cache=True):
+def load_image(path: str, use_cache=True, save_to_cache=True) -> pygame.Surface:
     """
     :param path: The path to the image, from within the assets/sprites folder. So to load 'assets/sprites/Foo.png'
     you would just pass 'Foo.png' as the path.

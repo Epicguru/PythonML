@@ -20,8 +20,6 @@ def run():
 
     # Local variables
     last_time = time.time()
-    frame_rate_timer = 0.0
-    frame_rate_counter = 0
 
     # Create a clock to manage frame rate.
     clock = pygame.time.Clock()
@@ -41,14 +39,9 @@ def run():
         dt = time_now - last_time
         last_time = time_now
 
-        # Update frame rate stats
-        frame_rate_timer += dt
-        frame_rate_counter += 1
-        if frame_rate_timer >= 1.0:
-            frame_rate_timer -= 1.0
-            gs.frames_per_second = frame_rate_counter
-            frame_rate_counter = 0
-            pygame.display.set_caption("ML Game: %sfps" % str(gs.frames_per_second))
+        # Update title
+        gs.frames_per_second = round(clock.get_fps())
+        pygame.display.set_caption("ML Game: %sfps, cam @ %s" % (str(round(clock.get_fps())), gs.camera_pos))
 
         for event in pygame.event.get():
             for e in gs.entities:
