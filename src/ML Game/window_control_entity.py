@@ -9,7 +9,14 @@ from utils.math_utils import *
 
 class WindowControlEntity(GameEntity):
 
-    i = 0
+    def init(self):
+
+        for i in range(10000):
+            x = random.randrange(0, 19) * 64
+            y = random.randrange(0, 19) * 64
+
+            spr = Sprite(load_image("Test.png"), position=Vector2(x, y))
+            spr.set_pivot(0.5, 0.5)
 
     def update(self, dt: float):
 
@@ -36,8 +43,5 @@ class WindowControlEntity(GameEntity):
             gs.running = False
         if event.type == pygame.KEYDOWN:
             if event.key == ord("s"):
-                spr = Sprite(load_image("Test.png"), position=Vector2(self.i * 64, self.i * 32))
-                spr.set_pivot(0.5, 0.5)
-                spr.set_position()
-                self.i += 1
+                pass
 

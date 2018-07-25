@@ -11,26 +11,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="sprite.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ML Game/sprite.py">
+      <file leaf-file-name="window_control_entity.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ML Game/window_control_entity.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="45" column="31" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="31" />
+            <state relative-caret-position="99">
+              <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#0#13#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="window_control_entity.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ML Game/window_control_entity.py">
+      <file leaf-file-name="game_state.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ML Game/game_state.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="38" column="94" selection-start-line="38" selection-start-column="94" selection-end-line="38" selection-end-column="94" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="85">
+              <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -83,11 +80,11 @@
         <option value="$PROJECT_DIR$/src/ML Game/assets/vector.py" />
         <option value="$PROJECT_DIR$/src/ML Game/vector.py" />
         <option value="$PROJECT_DIR$/src/ML Game/vectors.py" />
-        <option value="$PROJECT_DIR$/src/ML Game/game_state.py" />
         <option value="$PROJECT_DIR$/src/ML Game/utils/asset_loader.py" />
         <option value="$PROJECT_DIR$/src/ML Game/utils/vectors.py" />
         <option value="$PROJECT_DIR$/src/ML Game/main.py" />
         <option value="$PROJECT_DIR$/src/ML Game/utils/math_utils.py" />
+        <option value="$PROJECT_DIR$/src/ML Game/game_state.py" />
         <option value="$PROJECT_DIR$/src/ML Game/window_control_entity.py" />
         <option value="$PROJECT_DIR$/src/ML Game/sprite.py" />
       </list>
@@ -122,20 +119,6 @@
               <item name="SmallThings" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ML Game" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SmallThings" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SmallThings" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ML Game" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SmallThings" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SmallThings" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ML Game" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -289,7 +272,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.193265" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -599,13 +581,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ML Game/game_state.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ML Game/utils/asset_loader.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -630,29 +605,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ML Game/window_control_entity.py">
+    <entry file="file://$PROJECT_DIR$/src/ML Game/utils/math_utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="38" column="94" selection-start-line="38" selection-start-column="94" selection-end-line="38" selection-end-column="94" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="157">
+          <caret line="60" column="34" selection-start-line="60" selection-start-column="34" selection-end-line="60" selection-end-column="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ML Game/utils/math_utils.py">
+    <entry file="file://$PROJECT_DIR$/src/ML Game/game_state.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="58" column="8" selection-start-line="58" selection-start-column="8" selection-end-line="58" selection-end-column="8" />
+        <state relative-caret-position="85">
+          <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ML Game/sprite.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="45" column="31" selection-start-line="45" selection-start-column="31" selection-end-line="45" selection-end-column="31" />
+        <state relative-caret-position="167">
+          <caret line="61" column="31" selection-start-line="61" selection-start-column="31" selection-end-line="61" selection-end-column="31" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ML Game/window_control_entity.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="99">
+          <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>

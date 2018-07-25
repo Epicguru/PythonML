@@ -58,6 +58,16 @@ class Sprite(game_entity.GameEntity):
              self.get_image_dimensions()[1] + gs.camera_pos.get_y()
              + gs.resolution[1] * 0.5 +
              self.get_image_dimensions()[1] * self.get_pivot()[1])
+
+        if x > gs.resolution[0]:
+            return
+        if y > gs.resolution[1]:
+            return
+        if x + self.get_image_dimensions()[0] < 0:
+            return
+        if y + self.get_image_dimensions()[1] < 0:
+            return
+
         screen.blit(self.image, (x, y))
 
         pass
