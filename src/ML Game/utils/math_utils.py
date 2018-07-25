@@ -2,9 +2,9 @@ import math
 
 
 def clamp(value: float, minimum: float, maximum: float) -> float:
-    if min > max:
-        tmp = min
-        minimum = max
+    if minimum > maximum:
+        tmp = minimum
+        minimum = maximum
         maximum = tmp
 
     if value < minimum:
@@ -12,6 +12,10 @@ def clamp(value: float, minimum: float, maximum: float) -> float:
     if value > maximum:
         return maximum
     return value
+
+
+def lerp(a, b, t, clamp_t: bool = True):
+    return a + (b - a) * (t if not clamp_t else clamp(t, 0.0, 1.0))
 
 
 class Vector2(tuple):
@@ -141,6 +145,11 @@ class Vector2(tuple):
             return self
         else:
             raise TypeError("Cannot multiply this Vector2 by object of type '%s'!" % type(other))
+
+    def __eq__(self, other):
+        if isinstance(other, Vector2):
+            return self.get_x() == other.get_x() and self.get_y() == other.get_y()
+        return False
 
     def __itruediv__(self, other):
         if other is None:

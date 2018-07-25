@@ -11,7 +11,7 @@ class Sprite(game_entity.GameEntity):
     image_dim = (0, 0)
     pivot = (0, 0)
 
-    def __init__(self, image: pygame.Surface, position: Vector2 = utils.math_utils.VECTOR_ZERO):
+    def __init__(self, image: pygame.Surface, position: Vector2 = Vector2(0.0, 0.0)):
 
         self.set_image(image)
 
@@ -21,7 +21,7 @@ class Sprite(game_entity.GameEntity):
             self.position = utils.math_utils.VECTOR_ZERO
 
         # Add to entities automatically.
-        gs.entities.append(self)
+        gs.register_entity(self)
 
         pass
 

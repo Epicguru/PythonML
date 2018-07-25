@@ -1,13 +1,14 @@
 import window_control_entity
+import camera_controller
 import game_state as gs
+import game_manager
 
 
 def add_entities():
 
-    gs.entities.append(window_control_entity.WindowControlEntity())
-
-    for e in gs.entities:
-        e.init()
+    gs.register_entity(window_control_entity.WindowControlEntity())
+    gs.camera_controller = camera_controller.CameraController()
+    gs.register_entity(gs.camera_controller)
 
 
 def run():
@@ -19,7 +20,6 @@ def run():
     pygame.init()
 
     # Local variables
-    last_time = time.time()
 
     # Create a clock to manage frame rate.
     clock = pygame.time.Clock()
@@ -30,11 +30,15 @@ def run():
     # Add core entities.
     add_entities()
 
+    # Start game manager
+    game_manager.start_game()
+
+    last_time = time.time()
     # Start game loop.
     while gs.running:
 
         # Wait for target time to achieve frame rate, and also get ms time to extract delta time.
-        ms = clock.tick(gs.target_frame_rate)
+        clock.tick(gs.target_frame_rate)
         time_now = time.time()
         dt = time_now - last_time
         last_time = time_now
@@ -45,19 +49,20 @@ def run():
 
         for event in pygame.event.get():
             for e in gs.entities:
-                if isinstance(e, GameEntity):
-                    e.upon_event(event)
+                e.upon_event(event)
 
+        game_manager.update(dt)
         for e in gs.entities:
-            if isinstance(e, GameEntity):
-                e.update(dt)
+            e.update(dt)
 
         screen.fill(gs.bg_colour)
 
         # Draw everything here...
         for e in gs.entities:
-            if isinstance(e, GameEntity):
-                e.render(screen)
+            e.render(screen)
+        for e in gs.entities:
+            e.late_render(screen)
+
         # Update the window display. Must always be called.
         pygame.display.flip()
 
