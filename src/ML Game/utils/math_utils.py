@@ -1,23 +1,23 @@
 import math
 
 
-def clamp(value: float, min: float, max: float) -> float:
+def clamp(value: float, minimum: float, maximum: float) -> float:
     if min > max:
         tmp = min
-        min = max
-        max = tmp
+        minimum = max
+        maximum = tmp
 
-    if value < min:
-        return min
-    if value > max:
-        return max
+    if value < minimum:
+        return minimum
+    if value > maximum:
+        return maximum
     return value
 
 
 class Vector2(tuple):
 
-    def __new__(typ, x: float = 0.0, y: float = 0.0):
-        n = tuple.__new__(typ, (x, y))
+    def __new__(cls, x: float = 0.0, y: float = 0.0):
+        n = tuple.__new__(cls, (x, y))
         n.x = x
         n.y = y
         return n
