@@ -12,6 +12,7 @@ def start_game():
     gs.current_stage = 0
     gs.turn_index = 0
     gs.friendly_turn = True
+    gs.game_over = False
 
     # Create the friendlies...
     gs.friendlies = []
@@ -40,7 +41,11 @@ def update(dt):
     y_pos = (m * settings.agent_height_difference - 128.0) * 0.5
     gs.camera_controller.target_pos.set_y(y_pos)
 
-    if gs.completed:
+    if len(gs.friendlies) == 0 and not gs.game_over:
+        gs.game_over = True
+        print("All friendlies died! Game over!")
+
+    if gs.completed or gs.game_over:
         return
 
     # Move the stage forwards if all the enemies are dead.
@@ -54,7 +59,11 @@ def update(dt):
                 break
 
     if enemies_gone or enemies_dead:
-        next_stage()
+        global stage_timer
+        stage_timer += dt
+        if stage_timer >= settings.time_before_stage_continue:
+            next_stage()
+            stage_timer = 0.0
     else:
         update_turns(dt)
 
@@ -71,6 +80,7 @@ def next_stage():
 
 
 turn_timer = 0.0
+stage_timer = 0.0
 
 
 def update_turns(dt: float):
@@ -92,6 +102,7 @@ def update_turns(dt: float):
         if gs.turn_index >= len(local_friendlies):
             # Error
             print("ERROR! Index is %d, local friendly count is %d" % (gs.turn_index, len(local_friendlies)))
+            print("Is Friendly Team? " + str(is_f))
         else:
             # Get the agent, and their in-game friendly status.
             agent = local_friendlies[gs.turn_index]
@@ -125,12 +136,17 @@ def process_result(is_friendly, action_index: int, opponent_index: int, friendly
     if opponent_index < 0:
         print("ERROR! Opponent index is less than zero! Why?")
 
+    performer = friendlies[friendly_index]
+    target = opponents[opponent_index]
+
     if action_index == 0:
         # They choose to skip! Ok then...
         return
     elif action_index == 1:
         # They want to attack somebody!
-        # TODO implement.
+        target.damage(performer.get_damage(action_index))
+        anim_size = 50
+        performer.attack_anim(anim_size if is_friendly else -anim_size)
         pass
     else:
         print("ERROR! Action index %d is invalid!")
@@ -153,7 +169,7 @@ def process_turn(turn_index: int, turn_agent: Agent, friendly: bool, friendlies:
 
     if not friendly:
         # For now, in-game enemies just skip turns until they die. Yea.
-        return 0, 0
+        return 1, 0
     else:
         # Friendly, what do we do??
         return 1, 0

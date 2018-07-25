@@ -12,6 +12,9 @@ frames_per_second = target_frame_rate
 camera_controller = None
 
 completed = False
+game_over = False
+
+selected_agent = None
 
 current_stage = 0
 friendly_turn = True

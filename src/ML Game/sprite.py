@@ -15,6 +15,7 @@ class Sprite(game_entity.GameEntity):
         self.pivot = (0, 0)
         self.bounds = pygame.Rect(0, 0, 0, 0)
         self.set_image(image)
+        self.use_late_render = False
 
         if position is not None:
             self.position = Vector2(position.get_x(), position.get_y())
@@ -59,6 +60,15 @@ class Sprite(game_entity.GameEntity):
 
     def render(self, screen: pygame.Surface):
 
+        if not self.use_late_render:
+            self.draw(screen)
+
+    def late_render(self, screen: pygame.Surface):
+
+        if self.use_late_render:
+            self.draw(screen)
+
+    def draw(self, screen):
         if self.image is None:
             return
         if not self.enabled:
@@ -83,5 +93,3 @@ class Sprite(game_entity.GameEntity):
             return
 
         screen.blit(self.image, (x, y))
-
-        pass
