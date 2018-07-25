@@ -71,17 +71,17 @@ def next_stage():
         print("Moving on to stage: index #%s" % str(gs.current_stage))
 
 
-def process_turn(turn_index: int, turn_agent: Agent, friendly: bool, friendlies: [], oponents: []) -> (int, int):
+def process_turn(turn_index: int, turn_agent: Agent, friendly: bool, friendlies: [], opponents: []) -> (int, int):
     """
 
     :param turn_index: The index of the friendly Agent. Note that in this processing section, friendlies may actually be enemies in the normal game, since this method is used to process both enemy and local player actions.
     :param turn_agent: The agent who's turn it is.
     :param friendly: The real in-game friendly state. So if true, this is one of the blue guys.
     :param friendlies: The friendly guys, from the perspective of the turn_agent. May be blue or red, see friendly param.
-    :param oponents: The enemies, from the perspective of the turn_agent. May be blue or red, see friendly param.
-    :return: A tupple consisting of:
-    0: The target oponent index. Must be in the range 0 len(oponents - 1)
-    1: The action index to perform on the target oponent. Not implemented yet, just set it to 0.
+    :param opponents: The enemies, from the perspective of the turn_agent. May be blue or red, see friendly param.
+    :return: A tuple consisting of:
+    0: The target opponent index. Must be in the range 0 len(oponents - 1)
+    1: The action index to perform on the target opponent. Not implemented yet, just set it to 0.
     """
 
     pass
