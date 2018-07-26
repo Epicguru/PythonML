@@ -21,4 +21,4 @@ def get_world_mouse_pos() -> (float, float):
     mx += gs.camera_pos.get_x()
     my += gs.camera_pos.get_y()
 
-    return (mx, my)
+    return mx, my

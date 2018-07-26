@@ -48,6 +48,9 @@ class Sprite(game_entity.GameEntity):
             self.bounds.center = (self.pivot[0], self.pivot[1])
             self.bounds.size = (self.image_dim[0], self.image_dim[1])
 
+    def get_position(self):
+        return self.position
+
     def set_position(self, pos: Vector2):
         self.position.set(pos)
 
@@ -74,14 +77,7 @@ class Sprite(game_entity.GameEntity):
         if not self.enabled:
             return
 
-        x = (self.position.get_x() -
-             gs.camera_pos.get_x() + gs.resolution[0] * 0.5 -
-             self.get_image_dimensions()[0] * self.get_pivot()[0])
-
-        y = (-self.position.get_y() -
-             self.get_image_dimensions()[1] + gs.camera_pos.get_y()
-             + gs.resolution[1] * 0.5 +
-             self.get_image_dimensions()[1] * self.get_pivot()[1])
+        x, y = translate((self.get_position().get_x(), self.get_position().get_y()), self.get_image_dimensions(), self.get_pivot())
 
         if x > gs.resolution[0]:
             return
@@ -93,3 +89,16 @@ class Sprite(game_entity.GameEntity):
             return
 
         screen.blit(self.image, (x, y))
+
+
+def translate(pos: (float, float), size: (float, float), pivot: (float, float)) -> (float, float):
+    x = (pos[0] -
+         gs.camera_pos.get_x() + gs.resolution[0] * 0.5 -
+         size[0] * pivot[0])
+
+    y = (-pos[1] -
+         size[1] + gs.camera_pos.get_y()
+         + gs.resolution[1] * 0.5 +
+         size[1] * pivot[1])
+
+    return x, y

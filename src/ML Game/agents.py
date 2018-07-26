@@ -9,6 +9,7 @@ from sprite import Sprite
 import game_state as gs
 import settings
 import random
+import sprite
 
 
 class Agent(GameEntity):
@@ -61,16 +62,26 @@ class Agent(GameEntity):
         self.offset.set(self.rumble)
         self.offset.inc_x(self.attack_offset)
 
-        if self.highlighted:
+        h_active = (self.highlighted
+                    or (self.is_friendly and
+                        gs.friendly_turn and
+                        len(gs.friendlies) > 0 and
+                        gs.friendlies[gs.turn_index] == self)
+                    or (not self.is_friendly and
+                        not gs.friendly_turn and
+                        len(gs.enemies[gs.current_stage]) > 0 and
+                        gs.enemies[gs.current_stage][gs.turn_index] == self))
+
+        if h_active:
             self.highlight_sprite.position.set(self.position + self.offset)
             self.highlight_sprite.to_bottom()
             self.highlight_sprite.set_pivot(0.5, 0.5)
-        self.highlight_sprite.enabled = self.highlighted
+        self.highlight_sprite.enabled = h_active
 
-        self.label_sprite.set_image(create_text("%s/%s HP" % (str(math.ceil(self.health)), str(math.ceil(self.max_health))), size=19, color=(10, 90, 0)))
+        self.label_sprite.set_image(create_text("%s HP" % str(math.ceil(self.health)), size=19, color=(10, 20, 0), fonts=["Impact"]))
         self.label_sprite.set_pivot(0.5, 0.5)
         self.label_sprite.use_late_render = True
-        self.label_sprite.position.set(self.position + Vector2(0, 80))
+        self.label_sprite.set_position(self.position + Vector2(100 * self.label_direction(), 60))
 
         if self.is_dead():
 
@@ -96,6 +107,21 @@ class Agent(GameEntity):
             self.highlighted = False
             if gs.selected_agent == self:
                 gs.selected_agent = None
+
+    def render(self, screen: pygame.Surface):
+
+        pos = (self.position + Vector2(185 * self.health_bar_direction(), 50))
+        size = (148, 16)
+        inner_size = (140 * (self.health / self.max_health), 8)
+        x, y = sprite.translate((pos.get_x(), pos.get_y()), size, (0, 1))
+        pygame.draw.rect(screen, (20, 20, 20), pygame.Rect((x, y), size))
+        pygame.draw.rect(screen, (20, 255, 20), pygame.Rect((x + 4, y + 4), inner_size))
+
+    def health_bar_direction(self) -> float:
+        return -1
+
+    def label_direction(self):
+        return -1
 
     def died(self):
         pass
@@ -154,13 +180,13 @@ class FAgent(Agent):
 
 class EAgent(Agent):
 
-    def __init__(self, index: int, stage: int):
+    def __init__(self, index: int, stage: int, health: float):
         super().__init__(index)
 
         self.stage = stage
 
-        self.health = settings.agent_base_enemy_health
-        self.max_health = settings.agent_base_enemy_health
+        self.health = health
+        self.max_health = health
         self.base_attack_damage = settings.agent_base_enemy_damage
 
     def create(self):
@@ -185,3 +211,9 @@ class EAgent(Agent):
         self.position.set(calculated_pos + self.offset)
 
         super().update(dt)
+
+    def health_bar_direction(self):
+        return 0.2
+
+    def label_direction(self):
+        return 1.1

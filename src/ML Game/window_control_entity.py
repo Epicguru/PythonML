@@ -31,10 +31,6 @@ class WindowControlEntity(GameEntity):
 
     def late_render(self, screen: pygame.Surface):
 
-        if gs.selected_agent is not None:
-            selected_text = create_text((("" if gs.selected_agent.is_friendly else "Enemy '") + gs.selected_agent.name +"' : %d/%d HP" % (gs.selected_agent.health, gs.selected_agent.max_health)), size=24, fonts=["Calibri"])
-            draw_text(selected_text, screen, (5, 30))
-
         stage_text = create_text("Stage %d/%d" % (gs.current_stage + 1, settings.total_stages), size=24)
         draw_text(stage_text, screen, (5, 0))
 

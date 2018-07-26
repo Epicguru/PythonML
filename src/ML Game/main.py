@@ -1,14 +1,19 @@
 import window_control_entity
 import camera_controller
+import action_display
 import game_state as gs
 import game_manager
-
+import input_helper
+import battle_log
 
 def add_entities():
 
-    gs.register_entity(window_control_entity.WindowControlEntity())
     gs.camera_controller = camera_controller.CameraController()
+    gs.action_display = action_display.ActionDisplay()
+
     gs.register_entity(gs.camera_controller)
+    gs.register_entity(gs.action_display)
+    gs.register_entity(window_control_entity.WindowControlEntity())
 
 
 def run():
@@ -18,8 +23,6 @@ def run():
 
     print("Starting machine learning game...")
     pygame.init()
-
-    # Local variables
 
     # Create a clock to manage frame rate.
     clock = pygame.time.Clock()
@@ -68,11 +71,7 @@ def run():
 
     print("Game loop terminated, bye...")
 
-
-def quit_game():
-    global running
-    running = False
-
+    battle_log.save_datasets()
 
 if __name__ == "__main__":
 

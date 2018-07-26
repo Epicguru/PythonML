@@ -1,7 +1,8 @@
 import game_state as gs
 from agents import *
 from utils.mouse_utils import *
-from battle_log import log_turn_action
+from battle_log import *
+from effect import Effect
 
 
 def start_game():
@@ -22,8 +23,8 @@ def start_game():
     gs.enemies = []
     for i in range(settings.total_stages):
         gs.enemies.append([])
-        for j in range(settings.enemies_per_stage[i]):
-            gs.enemies[i].append(EAgent(j, i))
+        for j in range(int(settings.enemies_per_stage[i])):
+            gs.enemies[i].append(EAgent(j, i, settings.agent_base_enemy_health * settings.enemies_health_multipliers[i]))
 
     print("Started game with %d friendlies" % (len(gs.friendlies)))
 
@@ -87,10 +88,16 @@ def update_turns(dt: float):
 
     global turn_timer
     turn_timer += dt
-    if turn_timer >= settings.turn_min_interval:
+
+    is_currently_ai = (gs.friendly_turn and settings.friendly_is_ai) or not gs.friendly_turn
+
+    if turn_timer >= (settings.player_turn_min_interval if not is_currently_ai else settings.turn_min_interval):
+
+        if not is_currently_ai:
+            handle_user_input(dt)
 
         # Wait until we are ready to actually execute the turn...
-        if not ready_to_process_turn(dt):
+        if not ready_to_process_turn(dt, is_currently_ai):
             return
 
         # Process the next turn...
@@ -117,6 +124,15 @@ def update_turns(dt: float):
             # Execute that result in the game...
             process_result(is_in_game_friendly, res_action_index, res_opponent_index, gs.turn_index, friendlies, opponents)
 
+            # Reset the input variables, even if they were not used (in AI vs AI for example)
+            global in_target_index
+            global in_action_index
+            global in_confirmed
+
+            in_target_index = -1
+            in_action_index = 0
+            in_confirmed = False
+
             # Move the turn system forwards...
             if gs.turn_index >= len(friendlies) - 1:
                 # This side's turn is over, switch to the other.
@@ -139,21 +155,38 @@ def process_result(is_friendly, action_index: int, opponent_index: int, friendly
     performer = friendlies[friendly_index]
     target = opponents[opponent_index]
 
+    log_state(is_friendly, performer, opponent_index, action_index, opponents)
+
     if action_index == 0:
         # They choose to skip! Ok then...
-        return
+        spawn_effect(performer, "Clock Icon")
+
     elif action_index == 1:
         # They want to attack somebody!
         target.damage(performer.get_damage(action_index))
-        anim_size = 50
+        anim_size = 150
         performer.attack_anim(anim_size if is_friendly else -anim_size)
-        pass
+
+    elif action_index == 2:
+        # Wants to heal self.
+        amount = settings.ability_heal_amount
+        performer.health = min(performer.health + amount, performer.max_health)
+        spawn_effect(performer, "Heal Icon")
+
     else:
-        print("ERROR! Action index %d is invalid!")
+        print("ERROR! Action index %d is invalid!" % action_index)
 
 
-def ready_to_process_turn(dt):
-    return True
+def spawn_effect(user: Agent, icon_name):
+
+    pos = user.position + Vector2(55 if user.is_friendly else -55, 15)
+
+    Effect(asset_loader.load_image(icon_name + ".png"), pos, 1.0)
+
+
+def ready_to_process_turn(dt, is_AI):
+    return is_AI or ((in_action_index in settings.ability_does_not_require_target or in_target_index != -1) and in_confirmed)
+
 
 def process_turn(turn_index: int, turn_agent: Agent, friendly: bool, friendlies: [], opponents: []) -> (int, int):
     """
@@ -168,9 +201,46 @@ def process_turn(turn_index: int, turn_agent: Agent, friendly: bool, friendlies:
     """
 
     if not friendly:
-        # For now, in-game enemies just skip turns until they die. Yea.
+        # For now, the enemies just whack a random opponent
+        # TODO implement real AI
         return 1, 0
     else:
         # Friendly, what do we do??
-        return 1, 0
+        if settings.friendly_is_ai:
+            # Here AI code would come in. What action should be taken?
+            # TODO start implementing real AI
+            return 1, 0
+        else:
+            return in_action_index, in_target_index
 
+
+in_action_index = 0
+in_target_index = -1
+in_confirmed = False
+
+
+def handle_user_input(dt):
+    # TODO return true when done, and action and target index.
+
+    global in_action_index
+    global in_confirmed
+    global in_target_index
+
+    if gs.selected_agent is not None:
+        if not gs.selected_agent.is_friendly:
+            if not gs.selected_agent.is_dead():
+                if gs.selected_agent in gs.enemies[gs.current_stage]:
+                    in_target_index = gs.enemies[gs.current_stage].index(gs.selected_agent)
+    else:
+        in_target_index = -1
+
+    in_action_index = gs.action_display.s_a
+
+    if (in_action_index in settings.ability_does_not_require_target) or in_target_index != -1:
+        if gs.camera_controller.clicked_this_frame:
+            in_confirmed = True
+
+            if in_action_index in settings.ability_does_not_require_target:
+                in_target_index = 0
+
+    pass
